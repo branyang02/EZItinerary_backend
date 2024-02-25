@@ -56,12 +56,9 @@ def get_word_details(webString):
     return eval(response.choices[0].message.content)
 
 
-@app.route("/api/getItinerary", methods=["POST"])
+@app.route("/")
 def index():
-    data = request.get_json()  # Get data from request body
-    url = (
-        data.get("url") if data else None
-    )  # Safely get the 'url' from the request body
+    url = request.args.get("url")
 
     print(url)
     if url:
@@ -70,15 +67,13 @@ def index():
         data = {"result": result}
         return jsonify(data)
     else:
-        return jsonify({"error": "Missing 'url' in request body"}), 400
+        return jsonify({"error": "Missing 'url' parameter"}), 400
 
 
-@app.route("/test")
+@app.route("/hello")
 def hello_world():
     return jsonify({"message": "Hello, World!"})
 
 
-CORS(app, resources={r"/api/*": {"origins": "https://ez-itinerary.vercel.app"}})
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5002, debug=True)
