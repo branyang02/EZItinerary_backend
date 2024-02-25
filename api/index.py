@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 import requests
 from lxml import html
 from openai import OpenAI
@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 client = OpenAI()
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 INTERFACE = """
 interface Activity {
@@ -56,9 +56,11 @@ def get_word_details(webString):
     return eval(response.choices[0].message.content)
 
 
-@app.route("/")
+@app.route("/api/itinerary", methods=["GET", "POST"])  # Now handling POST method
 def index():
-    url = request.args.get("url")
+    # Extract 'url' from the JSON body of the request
+    data = request.get_json()
+    url = data.get("url") if data else None
 
     print(url)
     if url:
@@ -67,10 +69,10 @@ def index():
         data = {"result": result}
         return jsonify(data)
     else:
-        return jsonify({"error": "Missing 'url' parameter"}), 400
+        return jsonify({"error": "Missing 'url' in request body"}), 400
 
 
-@app.route("/hello")
+@app.route("/api/hello-world")
 def hello_world():
     return jsonify({"message": "Hello, World!"})
 
