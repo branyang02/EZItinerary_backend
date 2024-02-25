@@ -62,7 +62,6 @@ def index():
     url = (
         data.get("url") if data else None
     )  # Safely get the 'url' from the request body
-    
 
     print(url)
     if url:
@@ -78,6 +77,8 @@ def index():
 def hello_world():
     return jsonify({"message": "Hello, World!"})
 
+
+CORS(app, resources={r"/api/*": {"origins": "https://ez-itinerary.vercel.app"}})
 
 if __name__ == "__main__":
     app.run(debug=True)

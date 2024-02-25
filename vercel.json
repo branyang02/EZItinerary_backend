@@ -4,7 +4,8 @@
       {
         "src": "api/index.py",
         "use": "@vercel/python",
-        "config": { "maxLambdaSize": "50mb" }
+        "config": { "maxLambdaSize": "50mb" },
+        "maxDuration": 60
       }
     ],
     "routes": [
@@ -20,11 +21,6 @@
       "env": {
         "FLASK_APP": "api/index.py",
         "FLASK_ENV": "production"
-      }
-    },
-    "functions": {
-      "api/index.py": {
-        "maxDuration": 60
       }
     }
   }
