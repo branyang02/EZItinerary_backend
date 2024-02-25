@@ -56,9 +56,12 @@ def get_word_details(webString):
     return eval(response.choices[0].message.content)
 
 
-@app.route("/")
+@app.route("/api/getItinerary", methods=["POST"])
 def index():
-    url = request.args.get("url")
+    data = request.get_json()  # Get data from request body
+    url = (
+        data.get("url") if data else None
+    )  # Safely get the 'url' from the request body
 
     print(url)
     if url:
@@ -67,10 +70,10 @@ def index():
         data = {"result": result}
         return jsonify(data)
     else:
-        return jsonify({"error": "Missing 'url' parameter"}), 400
+        return jsonify({"error": "Missing 'url' in request body"}), 400
 
 
-@app.route("/hello")
+@app.route("/test")
 def hello_world():
     return jsonify({"message": "Hello, World!"})
 
