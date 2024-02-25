@@ -62,6 +62,7 @@ def index():
     url = (
         data.get("url") if data else None
     )  # Safely get the 'url' from the request body
+    
 
     print(url)
     if url:
